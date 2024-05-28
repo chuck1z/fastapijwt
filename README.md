@@ -6,11 +6,7 @@ This is a simple FastAPI project that demonstrates how to implement JWT (JSON We
 
 ### Prerequisites
 
-Before you begin, ensure you have Python installed on your system. You'll also need to install FastAPI and the required dependencies.
-
-```bash
-pip install fastapi pydantic jwtsign jwtvalidate
-```
+Before you begin, ensure you have Python installed on your system.
 
 ### Usage
 
@@ -26,57 +22,54 @@ pip install fastapi pydantic jwtsign jwtvalidate
    cd your-fastapi-jwt-project
    ```
 
-3. Run the FastAPI application:
+3. Install the required dependencies
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the FastAPI application:
 
    ```bash
    uvicorn main:app --reload
    ```
 
-4. Access the FastAPI interactive documentation at `http://localhost:8000/docs` to test the API endpoints.
+5. Access the FastAPI interactive documentation at `http://localhost:8000/docs` to test the API endpoints.
 
 ### API Endpoints
-
-- `POST /secure`: A secure route that requires a valid JWT token for access. You can obtain a token by signing in or signing up.
-
-- `POST /generate-token`: Generates a JWT token for a given `user_id`.
 
 - `POST /signup`: Registers a new user and returns a JWT token upon successful registration.
 
 - `POST /signin`: Signs in an existing user and returns a JWT token upon successful authentication.
 
+- `POST /authtest`: Decode the token given from /signup or /signin
+
 ### Example Usage
 
-To generate a JWT token for a user:
+Sign Up
 
-```http
-POST /generate-token
-
-{
-  "user_id": "your_user_id"
-}
+```bash
+curl --request POST \
+  --url http://localhost:8000/signup \
+  --header 'content-type: application/json' \
+  --data '{"name": "example_name", "email": "example@email.com", "password": "password123"}'
 ```
 
-To sign up a new user:
+Sign In
 
-```http
-POST /signup
-
-{
-  "name": "Your Name",
-  "email": "your@email.com",
-  "password": "your_password"
-}
+```bash
+curl --request POST \
+  --url http://localhost:8000/signin \
+  --header 'content-type: application/json' \
+  --data '{"email": "example@email.com", "password": "password123"}'
 ```
 
-To sign in:
+Auth Test
 
-```http
-POST /signin
-
-{
-  "email": "your@email.com",
-  "password": "your_password"
-}
+```bash
+curl --request POST \
+  --url http://localhost:8000/authtest?token={your_jwt_token} \
+  --header 'content-type: application/json'
 ```
 
 ### Dependencies
